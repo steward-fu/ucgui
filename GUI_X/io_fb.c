@@ -82,6 +82,7 @@ int fb_init(void)
 #if GUI_SDLSUPPORT
     SDL_Init(SDL_INIT_VIDEO);
     screen = SDL_SetVideoMode(LCD_XSIZE, LCD_YSIZE, 16, SDL_SWSURFACE);
+    SDL_ShowCursor(0);
     pthread_create(&thread_id, NULL, input_handler, NULL);
 #else
     pixels = malloc(LCD_XSIZE * LCD_YSIZE * 2);

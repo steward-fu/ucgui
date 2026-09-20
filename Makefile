@@ -9,6 +9,17 @@ CFLAGS += -I./GUI/Core
 CFLAGS += -I./GUI/Widget
 CFLAGS += $(MOREFLAGS)
 
+ifeq ($(MOD),gaviar)
+    CROSS = riscv64-linux-
+    CC = $(CROSS)gcc
+    AR = $(CROSS)ar
+    CFLAGS += -O2
+    CFLAGS += -DUSE_SDL
+    CFLAGS += -I/opt/gaviar/riscv64-Gaviar-linux-gnu/sysroot/usr/include/SDL
+    LDFLAGS = -lSDL
+    export PATH=/opt/gaviar/bin:$(shell echo $$PATH)
+endif
+
 ifeq ($(MOD),)
     CFLAGS += -O2
     CFLAGS += -DUSE_SDL
@@ -20,7 +31,7 @@ endif
 all: $(TARGET).a $(TARGET).so
 
 $(TARGET).a : $(OBJS)
-	ar crv $(TARGET).a $(OBJS)
+	$(AR) crv $(TARGET).a $(OBJS)
 
 $(TARGET).so : $(OBJS)
 	$(CC) -shared -fPIC $^ -o $@
